@@ -14,3 +14,13 @@ extension Optional: ThrowingPropertyWrapper {
     }
   }
 }
+
+// MARK: - public
+public extension Optional {
+  /// Exchange a tuple of optionals for a single optional tuple.
+  /// - Returns: `nil` if any tuple element is `nil`.
+  @inlinable static func zip<each Element>(_ optional: (repeat (each Element)?)) -> Self
+  where Wrapped == (repeat each Element) {
+    try? (repeat (each optional).wrappedValue())
+  }
+}
