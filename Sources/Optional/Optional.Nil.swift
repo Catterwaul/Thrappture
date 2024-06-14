@@ -1,6 +1,8 @@
 public extension Optional {
-  /// Represents that an `Optional` was `nil`.
-  struct Nil: Swift.Error & Equatable { }
+  /// An error that represents that an `Optional` was `nil`.
+  struct Nil: Swift.Error & Equatable {
+    private init() { }
+  }
 }
 
 // MARK: - ExpressibleByNilLiteral
