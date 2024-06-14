@@ -5,7 +5,7 @@ extension Optional: ThrowingPropertyWrapper {
   @inlinable public func wrappedValue() throws -> Wrapped {
     switch self {
     case let wrapped?: return wrapped
-    case nil: throw nil as UnwrapError
+    case nil: throw nil as Nil
     }
   }
 }
