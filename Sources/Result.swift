@@ -4,6 +4,7 @@ extension Result: ThrowingPropertyWrapper {
     try get()
   }
 
+  /// Set `self` to `.success(newValue)`.
   public mutating func setWrappedValue(_ newValue: Value) {
     self = .success(newValue)
   }
