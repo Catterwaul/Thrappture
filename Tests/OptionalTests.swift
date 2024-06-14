@@ -2,6 +2,19 @@ import Testing
 import Thrappture
 
 struct OptionalTests {
+  @Test func assignmentOperator() throws {
+    let value = "🪕"
+
+    var optional: Optional = value
+
+    try? optional = .none.wrappedValue()
+    _ = try #require(optional)
+
+    var some = "🎻"
+    try? some = optional.wrappedValue()
+    #expect(some == value)
+  }
+
   @Test func reduce() {
     var int: Int? = nil
     #expect(int.reduce(1, +) == 1)
