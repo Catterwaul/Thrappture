@@ -17,8 +17,10 @@ struct ResultTests {
   }
 
   @Test func zip() throws {
-    typealias Error = String?.Nil
-    let jenies: (Result<String, Error>, Result<String, Error>) = (.success("👖"), .success("🧞‍♂️"))
+    let jenies = (
+      Result<String, String?.Nil>.success("👖"),
+      Result<String, String?.Nil>.success("🧞‍♂️")
+    )
 
     #expect(
       try Result.zip(jenies).wrappedValue() == ("👖", "🧞‍♂️")
@@ -32,7 +34,7 @@ struct ResultTests {
       jenies.1 = .failure(nil)
       do {
         let jenies = jenies
-        #expect(throws: Error.self) {
+        #expect(throws: String?.nil) {
           try Result.zip(jenies).wrappedValue()
         }
       }
