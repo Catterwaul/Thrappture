@@ -3,7 +3,7 @@ import Thrappture
 
 struct ResultTests {
   @Test func zip() throws {
-    typealias Error = String?.UnwrapError
+    typealias Error = String?.Nil
     let jenies: (Result<String, Error>, Result<String, Error>) = (.success("👖"), .success("🧞‍♂️"))
 
     #expect(
