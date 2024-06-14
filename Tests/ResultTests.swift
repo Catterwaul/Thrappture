@@ -2,6 +2,20 @@ import Testing
 import Thrappture
 
 struct ResultTests {
+  @Test func assignmentOperator() throws {
+    let value = "🪕"
+
+    var result = Result<_, Never?.Nil>.success(value)
+
+    let failure = Result<String, _>.failure(Never?.nil)
+    try? result.setWrappedValue(failure.wrappedValue())
+    #expect(try result.wrappedValue() == value)
+
+    var success = "🎻"
+    try? success = result.wrappedValue()
+    #expect(success == value)
+  }
+
   @Test func reduce() {
     var arrayResult = Result<[Int], Void?.Nil>.failure(nil)
     let array: [Int] = [1, 2]
