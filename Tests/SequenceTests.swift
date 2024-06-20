@@ -2,7 +2,7 @@ import Testing
 import Thrappture
 
 struct SequenceTests {
-  @Test func zip() {
+  @Test func test_zip() {
     let sequences = (
       1...5,
       ["🇨🇦", "🐝", "🌊"],
@@ -10,7 +10,7 @@ struct SequenceTests {
       AnyIterator { "😺" }
     )
 
-    let zipped = Thrappture.zip(
+    let zipped = zip(
       sequences.0,
       sequences.1,
       sequences.2,
