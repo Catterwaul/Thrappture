@@ -19,4 +19,14 @@ struct ErrorCoalescingOperatorTests {
       try none.wrappedValue() ¿? Error1().throw() ¿? Error2().throw()
     }
   }
+
+  @Test func asyncErrorCoalescing() async {
+    struct Error: Swift.Error { }
+    await #expect(throws: Error.self) {
+      func `throw`() async throws(Error) {
+        throw .init()
+      }
+      try await (try await `throw`()) ¿? (try await `throw`())
+    }
+  }
 }

@@ -10,7 +10,7 @@ infix operator ¿?: NilCoalescingPrecedence
 public func ¿? <Value, Error>(
   _ value0: @autoclosure () throws -> Value,
   _ value1: @autoclosure () throws(Error) -> Value
-)  throws(Error) -> Value {
+) throws(Error) -> Value {
   do {
     return try value0()
   } catch {
@@ -24,7 +24,7 @@ public func ¿? <Value, Error>(
 public func ¿? <Value, Error>(
   _ value0: @autoclosure () throws(Error) -> Value,
   _ value1: @autoclosure () throws(Error) -> Value
-)  throws(Error) -> Value {
+) throws(Error) -> Value {
   do {
     return try value0()
   } catch {
@@ -52,5 +52,20 @@ public func ¿? <Value>(
     return try value0()
   } catch {
     return try value1()
+  }
+}
+
+/// The "**Error-Coalescing Operator**".
+/// - Note: The compiler cannot deal with another overload where `value1` is  not`async`.
+///   **Workaround**: When the compiler gains the ability to use sync overloads in an async context,
+///   store the intermediate result and use the synchronous version of `??` on it.
+public func ¿? <Value>(
+  _ value0: @autoclosure () async throws -> Value,
+  _ value1: @autoclosure () async throws -> Value
+) async throws -> Value {
+  do {
+    return try await value0()
+  } catch {
+    return try await value1()
   }
 }
