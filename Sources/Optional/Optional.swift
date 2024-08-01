@@ -1,11 +1,12 @@
 // MARK: - ThrowingPropertyWrapper
 extension Optional: ThrowingPropertyWrapper {
   /// - Bug: [We can't use `throws(UnwrapError)`](https://github.com/apple/swift/issues/74289).
-  /// - Throws: `UnwrapError`
+  /// Until that is fixed, `Optional.Error` remains `any Error`, not `Nil`, as it should be.
+  /// - Throws: `Nil`
   @inlinable public func wrappedValue() throws -> Wrapped {
     switch self {
     case let wrapped?: return wrapped
-    case nil: throw nil as Nil
+    case nil: throw Self.nil
     }
   }
 }

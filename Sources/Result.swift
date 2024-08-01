@@ -5,6 +5,9 @@ extension Result: ThrowingPropertyWrapper {
   }
 
   /// Set `self` to `.success(newValue)`.
+  ///
+  /// This would just be the assignment operator,
+  /// if `Result` were actually a property wrapper.
   public mutating func setWrappedValue(_ newValue: Value) {
     self = .success(newValue)
   }
