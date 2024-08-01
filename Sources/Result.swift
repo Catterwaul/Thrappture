@@ -22,4 +22,16 @@ public extension Result {
       return .failure(error)
     }
   }
+  
+  /// Transform success values.
+  /// - Throws: `Error`. If you instead want it to be stored in the new `Result`'s  `failure`,
+  /// use ``flatMapSuccess(_:)`` or ``flatMap(_:)``.
+  func mapSuccess<NewSuccess, Error>(
+    _ transform: (Success) throws(Error) -> NewSuccess
+  ) throws(Error) -> Result<NewSuccess, Failure> {
+    switch self {
+    case .success(let success): .success(try transform(success))
+    case .failure(let failure): .failure(failure)
+    }
+  }
 }
