@@ -16,6 +16,17 @@ struct ResultTests {
     #expect(success == value)
   }
 
+  @Test func maps() throws {
+    enum Failure: Error { case failure }
+    let intResult = Result<_, Failure>.success(1)
+    #expect(throws: Failure.failure) {
+      try intResult.mapSuccess { success throws(Failure) in
+        if success >= 100 { "💯" } else { throw .failure }
+      }
+    }
+
+  }
+
   @Test func reduce() {
     var arrayResult = Result<[Int], Void?.Nil>.failure(nil)
     let array: [Int] = [1, 2]
