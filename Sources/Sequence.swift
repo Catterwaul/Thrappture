@@ -9,7 +9,7 @@
       func mutateAndTransform<Iterator: IteratorProtocol>(
         _ iterator: Iterator
       ) throws -> (mutatedCopy: Iterator, transformed: Iterator.Element) {
-        try Thrappture.mutateAndTransform(iterator) { try $0.next().wrappedValue() }
+        try Thrappture.mutateAndTransform(iterator) { try $0.next().get() }
       }
 
       let iteratorAndNext = try (repeat mutateAndTransform(each iterator))

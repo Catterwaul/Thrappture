@@ -1,15 +1,7 @@
 // MARK: - ThrowingPropertyWrapper
 extension Result: ThrowingPropertyWrapper {
-  @inlinable public func wrappedValue() throws(Failure) -> Success {
-    try get()
-  }
-
-  /// Set `self` to `.success(newValue)`.
-  ///
-  /// This would just be the assignment operator,
-  /// if `Result` were actually a property wrapper.
-  public mutating func setWrappedValue(_ newValue: Value) {
-    self = .success(newValue)
+  @inlinable public mutating func set(_ newValue: @autoclosure () throws(Error) -> Value) {
+    self = .init(catching: newValue)
   }
 }
 
@@ -20,7 +12,7 @@ public extension Result {
   @inlinable static func zip<each Element>(_ result: (repeat Result<each Element, Failure>)) -> Self
   where Success == (repeat each Element) {
     do {
-      return .success((repeat try (each result).wrappedValue()))
+      return .success((repeat try (each result).get()))
     } catch {
       return .failure(error)
     }

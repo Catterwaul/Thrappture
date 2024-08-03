@@ -7,11 +7,11 @@ struct OptionalTests {
 
     var optional: Optional = value
 
-    try? optional = .none.wrappedValue()
+    try? optional = .none.get()
     _ = try #require(optional)
 
     var some = "🎻"
-    try? some = optional.wrappedValue()
+    try? some = optional.get()
     #expect(some == value)
   }
 
@@ -35,7 +35,7 @@ struct OptionalTests {
       optionalJenies.1 = nil
       let jenies = optionalJenies
       #expect(throws: (String, String)?.nil) {
-        try _?.zip(jenies).wrappedValue()
+        try _?.zip(jenies).get()
       }
     }
   }

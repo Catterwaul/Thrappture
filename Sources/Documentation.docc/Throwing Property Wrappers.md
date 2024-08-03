@@ -2,6 +2,13 @@
 
 …or, what should be, anyway.
 
+TODO: Move to document for `get`:
+- Note: This method should be the following property, which has equivalent spelling, [but it doesn't work yet](https://github.com/apple/swift/issues/74290).
+
+```swift
+@inlinable var wrappedValue: Value { get throws(Error) }
+```
+
 ## "Requirements"
 
 In addition to what can be represented in the type system, there are many methods which all `ThrowingPropertyWrapper`s have in common, which vary only by the generic representation of `Self`, with various `Value` and `Error` types.

@@ -8,12 +8,11 @@ public protocol ThrowingPropertyWrapper<Value, Error> {
   associatedtype Value
   associatedtype Error: Swift.Error
 
-  /// - Note: This method should be the following property, which has equivalent spelling,
-  /// [but it doesn't work yet](https://github.com/apple/swift/issues/74290).
-  /// ```swift
-  /// @inlinable var wrappedValue: Value { get throws(Error) }
-  /// ```
-  @inlinable func wrappedValue() throws(Error) -> Value
+  /// The `get` accessor for the wrapped value.
+  @inlinable func get() throws(Error) -> Value
+
+  /// The `set` accessor for the wrapped value.
+  @inlinable mutating func set(_ newValue: @autoclosure () throws(Error) -> Value)
 }
 
 // MARK: - public
@@ -27,7 +26,7 @@ public extension ThrowingPropertyWrapper {
     _ makeResult: (_ errorResult: Result, _ wrappedValue: Value) throws(Error) -> Result
   ) throws(Error) -> Result {
     do {
-      return try makeResult(errorResult, wrappedValue())
+      return try makeResult(errorResult, get())
     } catch {
       return errorResult
     }

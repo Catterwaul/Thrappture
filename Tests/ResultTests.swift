@@ -8,11 +8,11 @@ struct ResultTests {
     var result = Result<_, Never?.Nil>.success(value)
 
     let failure = Result<String, _>.failure(Never?.nil)
-    try? result.setWrappedValue(failure.wrappedValue())
-    #expect(try result.wrappedValue() == value)
+    try? result.set(failure.get())
+    #expect(try result.get() == value)
 
     var success = "🎻"
-    try? success = result.wrappedValue()
+    try? success = result.get()
     #expect(success == value)
   }
 
@@ -35,7 +35,7 @@ struct ResultTests {
       arrayResult.reduce(array) { $1 + $0 } == array
     )
 
-    arrayResult.setWrappedValue([0])
+    arrayResult.set([0])
     #expect(
       arrayResult.reduce(array) { $1 + $0 } == [0, 1, 2]
     )
@@ -48,7 +48,7 @@ struct ResultTests {
     )
 
     #expect(
-      try Result.zip(jenies).wrappedValue() == ("👖", "🧞‍♂️")
+      try Result.zip(jenies).get() == ("👖", "🧞‍♂️")
     )
 
     // `jenies` should be have been `var`,
@@ -60,7 +60,7 @@ struct ResultTests {
       do {
         let jenies = jenies
         #expect(throws: String?.nil) {
-          try Result.zip(jenies).wrappedValue()
+          try Result.zip(jenies).get()
         }
       }
     }
