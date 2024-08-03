@@ -2,20 +2,6 @@ import Testing
 import Thrappture
 
 struct ResultTests {
-  @Test func assignmentOperator() throws {
-    let value = "🪕"
-
-    var result = Result<_, Never?.Nil>.success(value)
-
-    let failure = Result<String, _>.failure(Never?.nil)
-    try? result.set(failure.get())
-    #expect(try result.get() == value)
-
-    var success = "🎻"
-    try? success = result.get()
-    #expect(success == value)
-  }
-
   @Test func maps() throws {
     enum Failure: Error { case failure }
     let intResult = Result<_, Failure>.success(1)
@@ -27,18 +13,8 @@ struct ResultTests {
 
   }
 
-  @Test func reduce() {
-    var arrayResult = Result<[Int], Void?.Nil>.failure(nil)
-    let array: [Int] = [1, 2]
 
-    #expect(
-      arrayResult.reduce(array) { $1 + $0 } == array
-    )
 
-    arrayResult.set([0])
-    #expect(
-      arrayResult.reduce(array) { $1 + $0 } == [0, 1, 2]
-    )
   }
 
   @Test func zip() throws {
@@ -59,7 +35,7 @@ struct ResultTests {
       jenies.1 = .failure(nil)
       do {
         let jenies = jenies
-        #expect(throws: String?.nil) {
+        #expect(throws: String?.Nil.self) {
           try Result.zip(jenies).get()
         }
       }

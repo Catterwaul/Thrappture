@@ -8,6 +8,9 @@ public protocol ThrowingPropertyWrapper<Value, Error> {
   associatedtype Value
   associatedtype Error: Swift.Error
 
+  /// Wrap a value or an error.
+  @inlinable init(catching: @autoclosure () throws(Error) -> Value)
+
   /// The `get` accessor for the wrapped value.
   @inlinable func get() throws(Error) -> Value
 

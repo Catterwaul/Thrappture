@@ -3,9 +3,6 @@ public extension Optional {
   struct Nil: Swift.Error & Equatable {
     @available(*, unavailable) private init() { }
   }
-
-  /// The error that represents that an `Optional` was `nil`.
-  @inlinable static var `nil`: Nil { nil }
 }
 
 // MARK: - ExpressibleByNilLiteral

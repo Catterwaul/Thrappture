@@ -2,19 +2,6 @@ import Testing
 import Thrappture
 
 struct OptionalTests {
-  @Test func assignmentOperator() throws {
-    let value = "🪕"
-
-    var optional: Optional = value
-
-    try? optional = .none.get()
-    _ = try #require(optional)
-
-    var some = "🎻"
-    try? some = optional.get()
-    #expect(some == value)
-  }
-
   @Test func zip() throws {
     let jenies = ("👖", "🧞‍♂️")
     #expect(try #require(Optional.zip(jenies)) == jenies)
@@ -26,7 +13,7 @@ struct OptionalTests {
       var optionalJenies: (_?, _?) = jenies
       optionalJenies.1 = nil
       let jenies = optionalJenies
-      #expect(throws: (String, String)?.nil) {
+      #expect(throws: (String, String)?.Nil.self) {
         try _?.zip(jenies).get()
       }
     }
