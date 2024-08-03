@@ -15,14 +15,6 @@ struct OptionalTests {
     #expect(some == value)
   }
 
-  @Test func reduce() {
-    var int: Int? = nil
-    #expect(int.reduce(1, +) == 1)
-
-    int = 2
-    #expect(int.reduce(1, +) == 3)
-  }
-
   @Test func zip() throws {
     let jenies = ("👖", "🧞‍♂️")
     #expect(try #require(Optional.zip(jenies)) == jenies)

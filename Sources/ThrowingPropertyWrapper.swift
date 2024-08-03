@@ -19,16 +19,13 @@ public protocol ThrowingPropertyWrapper<Value, Error> {
 public extension ThrowingPropertyWrapper {
   /// Modify a wrapped value.
   /// - Parameters:
+  ///   - errorResult: An unmodified value, when `wrappedValue` `throw`s.
   ///   - makeResult: arguments: (`errorResult`, `wrappedValue!`)
-  /// - Returns: An unmodified value, when `wrappedValue` `throw`s.
   func reduce<Result, Error: Swift.Error>(
     _ errorResult: Result,
     _ makeResult: (_ errorResult: Result, _ wrappedValue: Value) throws(Error) -> Result
   ) throws(Error) -> Result {
-    do {
-      return try makeResult(errorResult, get())
-    } catch {
-      return errorResult
-    }
+    try (try? get()).map { value throws(Error) in try makeResult(errorResult, value) }
+    ?? errorResult
   }
 }
