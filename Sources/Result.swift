@@ -7,15 +7,11 @@ extension Result: ThrowingPropertyWrapper {
 
 // MARK: - public
 public extension Result {
-  /// Exchange a tuple of `Results` for a single `Result` whose `Success` is a tuple.
+  /// Exchange a tuple of `Result`s for a single `Result` whose `Success` is a tuple.
   /// - Returns: `.failure` with the first failure that might occur in a tuple.
   @inlinable static func zip<each Element>(_ result: (repeat Result<each Element, Failure>)) -> Self
   where Success == (repeat each Element) {
-    do {
-      return .success((repeat try (each result).get()))
-    } catch {
-      return .failure(error)
-    }
+    .init { () throws(_) in (repeat try (each result).get()) }
   }
   
   /// Transform success values.

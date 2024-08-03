@@ -22,7 +22,7 @@ extension Optional: ThrowingPropertyWrapper {
 
 // MARK: - public
 public extension Optional {
-  /// Exchange a tuple of optionals for a single optional tuple.
+  /// Exchange a tuple of `Optional`s for a single `Optional` whose `Wrapped` is a tuple.
   /// - Returns: `nil` if any tuple element is `nil`.
   @inlinable static func zip<each Element>(_ optional: (repeat (each Element)?)) -> Self
   where Wrapped == (repeat each Element) {

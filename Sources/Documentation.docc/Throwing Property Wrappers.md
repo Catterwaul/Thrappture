@@ -42,4 +42,7 @@ In computer science, zipping is a function which maps a tuple of sequences into 
 
 - ``ThrowingPropertyWrapper``
 
+### zip
 
+- ``Swift/Optional/zip(_:)``
+- ``Swift/Result/zip(_:)``
