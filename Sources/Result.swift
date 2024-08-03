@@ -16,13 +16,39 @@ public extension Result {
   
   /// Transform success values.
   /// - Throws: `Error`. If you instead want it to be stored in the new `Result`'s  `failure`,
-  /// use ``flatMapSuccess(_:)`` or ``flatMap(_:)``.
-  @inlinable func mapSuccess<NewSuccess: ~Copyable, Error>(
-    _ transform: (Success) throws(Error) -> NewSuccess
-  ) throws(Error) -> Result<NewSuccess, Failure> {
+  /// use ``flatMapValue(_:)`` or ``flatMap(_:)``.
+  @inlinable func mapValue<NewValue: ~Copyable, Error>(
+    _ transform: (Success) throws(Error) -> NewValue
+  ) throws(Error) -> Result<NewValue, Failure> {
     switch self {
     case .success(let success): .success(try transform(success))
     case .failure(let failure): .failure(failure)
     }
+  }
+
+  /// Transform success values.
+  ///
+  /// If `transform` throws an error, it will be stored in a `.failure`.
+  /// This is possible because the `Failure` type cannot change using this method.
+  ///
+  /// If you need to change the error type as well, you'll need ``flatMap(_:)``,
+  /// because the type system cannot guarantee that you'll deal with this type's `Failure`  via `transform`.
+  @inlinable func flatMapValue<NewSuccess: ~Copyable>(
+    _ transform: (Success) throws(Failure) -> NewSuccess
+  ) -> Result<NewSuccess, Failure> {
+    .init { () throws(_) in try transform(get()) }
+  }
+
+  typealias Get = () throws(Failure) -> Success
+
+  /// Transform results into new results.
+  /// 
+  /// This is a functionality superset of ``flatMapValue(_:)``,
+  /// adding the capability to transform errors as well.
+  /// - Parameter transform: Processes this `Result`'s `get`.
+  @inlinable func flatMap<NewSuccess: ~Copyable, NewFailure>(
+    _ transform: (Get) throws(NewFailure) -> NewSuccess
+  ) -> Result<NewSuccess, NewFailure> {
+    .init { () throws(_) in try transform(get) }
   }
 }

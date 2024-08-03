@@ -70,10 +70,14 @@ $value = .success(3)
 $value = .failure(nil)
 let newValue: Int = try value
 ```
-##### Usage Examples
+
+---
+
+### Usage Examples
 
 You've got the source code, so aside from reading this documentation, see the **Tests** folder for example usage! 😺
 
 ## Topics
 
-- <doc:Throwing-Property-Wrappers>
+- <doc:Notes-on-Conversion>
+- ``ThrowingPropertyWrapper``

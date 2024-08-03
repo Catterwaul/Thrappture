@@ -5,16 +5,19 @@ struct ResultTests {
   @Test func maps() throws {
     enum Failure: Error { case failure }
     let intResult = Result<_, Failure>.success(1)
-    #expect(throws: Failure.failure) {
-      try intResult.mapSuccess { success throws(Failure) in
-        if success >= 100 { "💯" } else { throw .failure }
-      }
+
+    func transform(_ value: Int) throws(Failure) -> String {
+      if value >= 100 { "💯" } else { throw .failure }
     }
+    #expect(try intResult.mapValue { $0 + 1 }.get() == 2)
+    #expect(throws: Failure.failure) { try intResult.mapValue(transform) }
+    #expect(throws: Failure.failure, performing: intResult.flatMapValue(transform).get)
 
-  }
-
-
-
+    #expect(throws: Double?.Nil.self) {
+      try intResult.flatMap { get in
+        try transform(get()) ¿? (nil as Double?.Nil).throw()
+      }.get()
+    }
   }
 
   @Test func zip() throws {

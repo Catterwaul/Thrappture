@@ -1,8 +1,6 @@
 # Notes on Conversion
 
-## 
-
-### Typed Throws and Return Values
+## Typed Throws and Return Values
 
 #### Result
 
@@ -31,3 +29,19 @@ func string() throws(MatéError) -> String { throw .🧉 }
 func string() -> String? { nil }
 func string() throws(String?.Nil) -> String { throw nil }
 ```
+
+## Assignment
+
+Swift doesn't offer a very concise way to assign wrapped values of optionals to other values. 
+
+```swift
+if let optional { value = optional }
+```
+
+That is not terrible, but `Result` offers better.
+
+```swift
+try? value = result.get() 
+```
+
+This package [adds `get` to `Optional`](<doc:Swift/Optional/get()>), allowing for the same syntax that `Result` offers.    
