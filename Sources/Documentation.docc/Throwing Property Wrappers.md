@@ -1,5 +1,7 @@
 # Throwing Property Wrappers
 
+…or, what should be, anyway.
+
 ## "Requirements"
 
 In addition to what can be represented in the type system, there are many methods which all `ThrowingPropertyWrapper`s have in common, which vary only by the generic representation of `Self`, with various `Value` and `Error` types.
