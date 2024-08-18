@@ -2,6 +2,12 @@ import Testing
 import Thrappture
 
 struct OptionalTests {
+  @Test func filter() throws {
+    let optional: Optional = 1
+    #expect(optional.filter { $0 > 0 } == 1)
+    #expect(optional.filter { $0 > 1 } == nil)
+  }
+
   @Test func zip() throws {
     let jenies = ("👖", "🧞‍♂️")
     #expect(try #require(Optional.zip(jenies)) == jenies)
