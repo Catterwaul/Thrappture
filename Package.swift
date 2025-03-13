@@ -1,25 +1,32 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.1
 
 import Foundation // for String.capitalized
 import PackageDescription
 
-let name = "Thrappture"
-
 _ = Package(
-  name: name,
+  name: .shortenedName(),
   platforms: [.iOS(.v13), .macOS(.v10_15)],
-  products: [.library(name: name, targets: [name])],
-  dependencies: [
-    .package(url: "https://github.com/swiftlang/swift-docc-plugin", branch: "main")
-  ],
+  products: [.library(name: .shortenedName(), targets: [.shortenedName()])],
+  dependencies: dependencies.map(\.package),
   targets: [
-    .target(name: name),
+    .target(
+      name: .shortenedName(),
+      dependencies: dependencies.dropFirst().map(\.product)
+    ),
     .testTarget(
-      name: name + ".Tests",
-      dependencies: [.init(stringLiteral: name)]
+      name: .shortenedName(suffix: "Tests"),
+      dependencies: [.init(stringLiteral: .shortenedName())]
     )
   ]
 )
+
+extension String {
+  static func shortenedName(suffix: String? = nil) -> String {
+    let shortenedName = "Thrappture"
+    return if let suffix { "\(shortenedName).\(suffix)" }
+    else { shortenedName }
+  }
+}
 
 // MARK: - Dependency
 
