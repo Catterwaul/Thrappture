@@ -15,7 +15,8 @@ struct ResultTests {
 
     #expect(throws: Double?.Nil.self) {
       try intResult.flatMap { get in
-        try transform(get()) ¿? (nil as Double?.Nil).throw()
+        do { return try transform(get()) }
+        catch { throw nil as Double?.Nil }
       }.get()
     }
   }
