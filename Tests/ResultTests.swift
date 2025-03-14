@@ -23,8 +23,8 @@ struct ResultTests {
 
   @Test func zip() throws {
     let jenies = (
-      Result<String, String?.Nil>.success("👖"),
-      Result<String, String?.Nil>.success("🧞‍♂️")
+      Result<_, String?.Nil>.success("👖"),
+      Result<_, String?.Nil>.success("🧞‍♂️")
     )
 
     #expect(
