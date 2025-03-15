@@ -1,6 +1,6 @@
 // MARK: - ThrowingPropertyWrapper
 extension Optional: ThrowingPropertyWrapper {
-  @inlinable public init(catching value: @autoclosure () throws -> Wrapped) {
+  @inlinable public init(catching value: @autoclosure () throws(Error) -> Wrapped) {
     self = try? value()
   }
   
