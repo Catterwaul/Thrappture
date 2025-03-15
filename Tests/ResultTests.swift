@@ -1,26 +1,8 @@
+import HMError
 import Testing
 import Thrappture
 
 struct ResultTests {
-  @Test func maps() throws {
-    enum Failure: Error { case failure }
-    let intResult = Result<_, Failure>.success(1)
-
-    func transform(_ value: Int) throws(Failure) -> String {
-      if value >= 100 { "💯" } else { throw .failure }
-    }
-    #expect(try intResult.mapValue { $0 + 1 }.get() == 2)
-    #expect(throws: Failure.failure) { try intResult.mapValue(transform) }
-    #expect(throws: Failure.failure, performing: intResult.flatMapValue(transform).get)
-
-    #expect(throws: Double?.Nil.self) {
-      try intResult.flatMap { get in
-        do { return try transform(get()) }
-        catch { throw nil as Double?.Nil }
-      }.get()
-    }
-  }
-
   @Test func zip() throws {
     let jenies = (
       Result<_, String?.Nil>.success("👖"),
@@ -43,6 +25,83 @@ struct ResultTests {
           try Result.zip(jenies).get()
         }
       }
+    }
+  }
+
+  struct Map {
+    func transform(_ string: String) throws(Int?.Nil) -> Int {
+      try .init(string).get() ¿! Int?.Nil.self
+    }
+
+    func test<Failure: Equatable, Error>(
+      _ map: (Result<String, Failure>) throws(Error) -> Result<Int, Failure>,
+      failure: Failure,
+      testInvalidString: @escaping (() throws(Error) -> Result<Int, Failure>) -> Void
+    ) throws {
+      try test(map, failure: failure)
+      self.testInvalidString(map, testInvalidString)
+    }
+
+    func test<Failure: Equatable, Error>(
+      _ map: (Result<String, Failure>) throws(Error) -> Result<Int, Failure>,
+      failure: Failure
+    ) throws {
+      successToSuccess: do {
+        let result = try map(Result<_, Failure> { "1" })
+        #expect(try result.get() == 1)
+      }
+      failurePropagates: do {
+        let result = try map(Result.failure(failure))
+        #expect(throws: failure, performing: result.get)
+      }
+    }
+
+    /// - Bug: This is not callable from `mergeError`.
+    func testInvalidString<Failure: Equatable, Error>(
+      _ map: (Result<String, Failure>) throws(Error) -> Result<Int, Failure>,
+      _ testInvalidString: @escaping (() throws(Error) -> Result<Int, Failure>) -> Void
+    ) {
+      testInvalidString { () throws(_) in try map(.init { "🏅" }) }
+    }
+
+    @Test func standard() throws {
+      typealias Result<Success> = Swift.Result<Success, SomeError>
+      
+      func test(_ map: (Result<String>) throws(Int?.Nil) -> Result<Int>) throws {
+        try self.test(map, failure: .init()) { getResult in
+          transformThrows: do {
+            #expect(throws: nil as Int?.Nil) { try getResult() }
+          }
+        }
+      }
+
+      try test { result throws(_) in
+        try result.flatMap { string throws(Int?.Nil) in
+            .success(try transform(string))
+        }
+      }
+
+      try test { result throws(_) in try result.map(transform) }
+    }
+
+    @Test func mergeError() throws {
+      typealias Failure = Int?.Nil
+      typealias Result<Success> = Swift.Result<Success, Failure>
+
+      func test(_ map: (Result<String>) -> Result<Int>) throws {
+        try self.test(map, failure: nil)
+        transformMerges: do {
+          let result = map(Result { "🏅" })
+          #expect(throws: nil as Failure, performing: result.get)
+        }
+      }
+
+      try test {
+        $0.flatMapAndMergeError { string throws(_) in
+            .success(try transform(string))
+        }
+      }
+      try test { $0.mapAndMergeError(transform) }
     }
   }
 }

@@ -15,6 +15,9 @@ public protocol ThrowingPropertyWrapper<Value, Error> {
   @inlinable func get() throws(Error) -> Value
 
   /// The `set` accessor for the wrapped value.
+  ///
+  /// `set` accessors  are unavailable for properties with throwing `get` accessors,
+  /// so this is forced to be a method.
   @inlinable mutating func set(_ newValue: @autoclosure () throws(Error) -> Value)
 }
 
@@ -22,13 +25,12 @@ public protocol ThrowingPropertyWrapper<Value, Error> {
 public extension ThrowingPropertyWrapper {
   /// Modify a wrapped value.
   /// - Parameters:
-  ///   - errorResult: An unmodified value, when `wrappedValue` `throw`s.
-  ///   - makeResult: arguments: (`errorResult`, `wrappedValue!`)
-  func reduce<Result, Error: Swift.Error>(
+  ///   - errorResult: An unmodified value, when `get()` `throw`s.
+  @inlinable func reduce<Result, Error: Swift.Error>(
     _ errorResult: Result,
     _ makeResult: (_ errorResult: Result, _ wrappedValue: Value) throws(Error) -> Result
   ) throws(Error) -> Result {
-    try (try? get()).map { value throws(Error) in try makeResult(errorResult, value) }
-    ?? errorResult
+    do { return try makeResult(errorResult, get()) }
+    catch { return errorResult }
   }
 }

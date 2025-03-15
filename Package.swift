@@ -18,7 +18,10 @@ var modules: [Module] {
       target: .testTarget(
         name: .LibraryName.suffixed("Tests")
       ),
-      internalDependencyNames: [.libraryName]
+      internalDependencyNames: [.libraryName],
+      externalDependencies: [
+        .Catterwaul.hmError
+      ]
     )
   ]
 }

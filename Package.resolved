@@ -1,6 +1,15 @@
 {
-  "originHash" : "05cd756368e13236040a4f4a96d09d68f6791fdae94297964eaf40aff10ce729",
+  "originHash" : "1229634c5bcdc38f3ca1eeb37754f82c5bfbcfa920cc6cab3d407c0b456eba99",
   "pins" : [
+    {
+      "identity" : "hemiprocnemystaceaerror",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Catterwaul/HemiprocneMystaceaError",
+      "state" : {
+        "branch" : "main",
+        "revision" : "e9e65c64c21afb32b5b9ad60a7094bcf0e413a83"
+      }
+    },
     {
       "identity" : "swift-docc-plugin",
       "kind" : "remoteSourceControl",
