@@ -25,12 +25,13 @@ public protocol ThrowingPropertyWrapper<Value, Error> {
 public extension ThrowingPropertyWrapper {
   /// Modify a wrapped value.
   /// - Parameters:
-  ///   - errorResult: An unmodified value, when `get()` `throw`s.
-  @inlinable func reduce<Result, Error: Swift.Error>(
-    _ errorResult: Result,
-    _ makeResult: (_ errorResult: Result, _ wrappedValue: Value) throws(Error) -> Result
-  ) throws(Error) -> Result {
-    do { return try makeResult(errorResult, get()) }
-    catch { return errorResult }
+  ///   - defaultValue: An unmodified value, when `get()` `throw`s.
+  ///   - combine: Use the wrapped value to create another value of the same type as `defaultValue`.
+  @inlinable func reduce<Transformed, Error: Swift.Error>(
+    _ defaultValue: Transformed,
+    _ combine: (_ errorValue: Transformed, _ wrappedValue: Value) throws(Error) -> Transformed
+  ) throws(Error) -> Transformed {
+    do { return try combine(defaultValue, get()) }
+    catch { return defaultValue }
   }
 }

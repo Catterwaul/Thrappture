@@ -47,7 +47,7 @@ struct ResultTests {
       failure: Failure
     ) throws {
       successToSuccess: do {
-        let result = try map(Result<_, Failure> { "1" })
+        let result = try map(.init { "1" })
         #expect(try result.get() == 1)
       }
       failurePropagates: do {
