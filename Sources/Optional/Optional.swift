@@ -15,7 +15,7 @@ extension Optional: ThrowingPropertyWrapper {
     }
   }
 
-  @inlinable public mutating func set(_ newValue: @autoclosure () throws(Error) -> Value) {
+  @inlinable public mutating func set(_ newValue: @autoclosure () throws(Error) -> Wrapped) {
     self = try? newValue()
   }
 }
