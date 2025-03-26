@@ -145,19 +145,53 @@ let characters: Optional = "🦁🐯🐻"
 let character: Character? = characters.flatMap { "\($0)👧🏻👠🐒🪽".randomElement() } ?? "🧙‍♀️"
 ```
 
-#### mapError
+#### mapFailure
 
-This is to `flatMapError` as `map` is to `flatMap`.
+This is to `flatMapFailure` as `map` is to `flatMap`.
+
+#### mapFailureToSuccess
+
+This idea only works when the `Failure` type is going to be "removed", which is represented by `Never`. So, there's no point in offering a `flatMapFailureToSuccess`, as `Result.failure`s can't be created with if their `Failure` is `Never`.
+
+###### Result
+
+[`Result`'s implementation](doc:Swift/Result/mapFailureToSuccess(_:)) is documented below.
 
 ###### Optional
 
-Important to note: while nil-coalescing allows for completely removing `Optional` wrappers, you'll sometimes need to use `flatMap`, instead of `map`, to flatten optionality down to one level of wrapping, first. 
+This is nil-coalescing, specifically when the result is non-optional.
+
+***Important to note:*** while nil-coalescing allows for completely removing `Optional` wrappers, you'll sometimes need to use `flatMap`, instead of `map`, to flatten optionality down to one level of wrapping, first. 
 
 ```swift
 let characters: Optional = "🦁🐯🐻👧🏻👠🐒🪽"
 characters?.randomElement() ?? "🧙‍♀️"               // Character
 characters.flatMap { $0.randomElement() } ?? "🧙‍♀️" // Character
 characters.map { $0.randomElement() } ?? "🧙‍♀️"     // Character?
+```
+
+#### mapFailureToSuccessAndErrorToFailure
+
+This is a niche type of error mapping operation.  
+
+It's similar to the "`…AndMergeError`"s in that an error thrown from transforming will become a `failure`.
+
+But it's dissimilar in that while the error thrown *can* be `Failure`, there's no requirement of that (and it's likely to be a rare case). So, calling this `mapFailureToSuccessAndMergeError` would not generally be accurate.
+
+###### Result
+
+[`Result`'s implementation](doc:Swift/Result/mapFailureToSuccessAndErrorToFailure(_:)) is documented below.
+
+###### Optional
+
+This is nil-coalescing, when the argument on the right of the `??` is also optional.  
+
+Because `Success` can't change, and `Failure` is tied to `Success`, for `Optional`, `Failure` can't change either.
+
+```swift
+let characters: Optional = "🦁🐯🐻👧🏻👠🐒🪽"
+let character: Character? = "🧙‍♀️"
+characters?.randomElement() ?? character  // Character?
 ```
 
 ## Topics
@@ -178,3 +212,5 @@ characters.map { $0.randomElement() } ?? "🧙‍♀️"     // Character?
 - ``Swift/Result/flatMapAndMergeError(_:)``
 - ``Swift/Result/map(_:)``
 - ``Swift/Result/mapAndMergeError(_:)``
+- ``Swift/Result/mapFailureToSuccess(_:)``
+- ``Swift/Result/mapFailureToSuccessAndErrorToFailure(_:)``
