@@ -1,7 +1,7 @@
 import Testing
 import Thrappture
 
-struct WrapperTests {
+struct ThrowingPropertyWrapperTests {
   @Test func accessors() throws {
     func test<Wrapper: ThrowingPropertyWrapper<String, any Error>>(
       _: Wrapper.Type
