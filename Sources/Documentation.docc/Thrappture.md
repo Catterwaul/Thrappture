@@ -80,4 +80,3 @@ You've got the source code, so aside from reading this documentation, see the **
 ## Topics
 
 - <doc:Notes-on-Conversion>
-- ``ThrowingPropertyWrapper``
